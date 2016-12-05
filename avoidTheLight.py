@@ -37,7 +37,6 @@ class AvoidTheLightGameWindow(arcade.Window):
     
     def on_key_press(self, key, key_modifiers):
         self.world.on_key_press(key, key_modifiers)
-        print("a")
 
     def on_draw(self):
         arcade.start_render()
