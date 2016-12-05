@@ -1,10 +1,11 @@
 import arcade.key
 
-s = 0
+state = 0
 falling_acceleration = -10
 flying_acceleration = 20
 t = 0
 flying_time = 0
+bat_velocity = 0
 
 
 class Bat:
@@ -13,35 +14,39 @@ class Bat:
         self.world = world
         self.x = x
         self.y = y
-        self.original_falling_speed = 3
-        self.falling_speed = self.original_falling_speed
-        self.original_flying_speed = 6
-        self.flying_speed = self.original_flying_speed
 
-    def animate(self, delta):
-        global s
+    def animate(self, delta_time):
+        global state
         global falling_acceleration
         global t
         global flying_time
+        global bat_velocity
 
-        if s == 0:
-            self.y += falling_acceleration * t * t
+        if state == 0:
+            if bat_velocity <= 0:
+                self.y += falling_acceleration * t * t
+                flying_time = 0
+                t += delta_time
+            else:
+                self.y += falling_acceleration * flying_time * flying_time
+                flying_time -= delta_time
+            print("state 0")
 
-        elif s != 0:
-            self.y += flying_acceleration * t * t
-            self.falling_speed = self.original_falling_speed
+        elif state != 0:
+            self.y += flying_acceleration * flying_time * flying_time
+            print("state not 0")
             t = 0
-        s = 0
-        t += 0.03
+            flying_time += delta_time        
+
+        bat_velocity = flying_acceleration*flying_time
+        print(bat_velocity)
+
         if self.y < 0:
             self.y = 0
-            self.falling_speed = 0
+
             t = 0
         elif self.y > self.world.height:
             self.y = self.world.height
-            self.falling_speed = 0
-        print(t)
-
 
 class World:
 
@@ -52,9 +57,18 @@ class World:
         self.bat = Bat(self, int(self.width / 2), int(self.height / 2))
 
     def on_key_press(self, key, key_modifiers):
-        global s
+        global state
         if key == arcade.key.SPACE:
-            s += 1
+            state += 1
+            print("press")
+            # print(s)
+
+    def on_key_release(self, key, key_modifiers):
+        global state
+        if key == arcade.key.SPACE:
+            state = 0
+        print("release")
+        # print(s)
 
     def animate(self, delta):
         self.bat.animate(delta)
