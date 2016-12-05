@@ -1,7 +1,7 @@
 import arcade.key
 
 state = 0
-falling_acceleration = -10
+falling_acceleration = -15
 flying_acceleration = 20
 t = 0
 flying_time = 0
@@ -28,7 +28,7 @@ class Bat:
                 flying_time = 0
                 t += delta_time
             else:
-                self.y += falling_acceleration * flying_time * flying_time
+                self.y += bat_velocity * flying_time + falling_acceleration * flying_time * flying_time
                 flying_time -= delta_time
             print("state 0")
 
