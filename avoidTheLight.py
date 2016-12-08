@@ -31,12 +31,17 @@ class AvoidTheLightGameWindow(arcade.Window):
     def __init__(self, width, height):
         super().__init__(width, height)
 
-        arcade.set_background_color(arcade.color.WHITE)
+        arcade.set_background_color((94, 120, 197, 0))
 
         self.world = World(width, height)
         self.bat_sprite = ModelSprite(SRC['bat'], model=self.world.bat)
-        self.firefly_sprite = ModelSprite(SRC['firefly'], model=self.world.firefly)
-        # print(type(self.bat_sprite))
+        self.firefly_sprites = []
+        n = 0
+        for firefly in self.world.fireflies:
+            print(n)
+            n += 1
+            self.firefly_sprites.append(ModelSprite(SRC['firefly'], model=firefly))
+        
 
     def on_key_press(self, key, key_modifiers):
         self.world.on_key_press(key, key_modifiers)
@@ -47,7 +52,8 @@ class AvoidTheLightGameWindow(arcade.Window):
     def on_draw(self):
         arcade.start_render()
         self.bat_sprite.draw()
-        self.firefly_sprite.draw()
+        for sprite in self.firefly_sprites:
+            sprite.draw()
 
     def animate(self, delta):
         self.world.animate(delta)
