@@ -1,16 +1,15 @@
 import arcade.key
 
-state = 0
-falling_acceleration = -25
-flying_acceleration = 30
+FLYING_STATE = 0
+FALLING_ACCELERATION = -15
+FLYING_ACCELERATION = 20
+FLYING_TIME = 0
+FALLING_TIME = 0
+BAT_FLYING_VELOCITY = 0
+BAT_FALLING_VELOCITY = 0
 
-flying_time = 0
-falling_time = 0
-bat_flying_velocity = 0
-bat_falling_velocity = 0
 
-
-class Bat:
+class Bat():
 
     def __init__(self, world, x, y):
         self.world = world
@@ -18,49 +17,49 @@ class Bat:
         self.y = y
 
     def animate(self, delta_time):
-        global state
-        global falling_acceleration
-        global falling_time
-        global flying_time
-        global falling_time
-        global bat_falling_velocity
-        global bat_flying_velocity
-
-        if state == 0:
-            if bat_flying_velocity <= 0:
-                self.y += falling_acceleration * falling_time * falling_time
-                flying_time = 0
-                falling_time += delta_time
-            else:
-                self.y += bat_flying_velocity * flying_time + \
-                    falling_acceleration * flying_time * flying_time
-                flying_time -= delta_time
-            print("state 0")
-
-        elif state != 0:
-            if bat_falling_velocity >= 0:
-                self.y += flying_acceleration * flying_time * flying_time
-                falling_time = 0
-                flying_time += delta_time
-            else:
-                self.y -= bat_falling_velocity * falling_time + \
-                    flying_acceleration * falling_time * falling_time
-                falling_time -= delta_time
-            print("state not 0")
+        global FLYING_STATE
+        global FALLING_ACCELERATION
+        global FALLING_TIME
+        global FLYING_TIME
+        global FALLING_TIME
+        global BAT_FALLING_VELOCITY
+        global BAT_FLYING_VELOCITY
         
-        print(bat_falling_velocity)
-        bat_flying_velocity = flying_acceleration * flying_time
-        bat_falling_velocity = falling_acceleration * falling_time
+        if FLYING_STATE == 0:
+            if BAT_FLYING_VELOCITY <= 0:
+                self.y += FALLING_ACCELERATION * FALLING_TIME * FALLING_TIME
+                FLYING_TIME = 0
+                FALLING_TIME += delta_time
+            else:
+                self.y += BAT_FLYING_VELOCITY * FLYING_TIME + \
+                FALLING_ACCELERATION * FLYING_TIME * FLYING_TIME
+                FLYING_TIME -= delta_time
+            print("FLYING_STATE 0")
+
+        elif FLYING_STATE != 0:
+            if BAT_FALLING_VELOCITY >= 0:
+                self.y += FLYING_ACCELERATION * FLYING_TIME * FLYING_TIME
+                FALLING_TIME = 0
+                FLYING_TIME += delta_time
+            else:
+                self.y -= BAT_FALLING_VELOCITY * FALLING_TIME + \
+                    FLYING_ACCELERATION * FALLING_TIME * FALLING_TIME
+                FALLING_TIME -= delta_time
+            print("FLYING_STATE not 0")
+        
+        print(BAT_FALLING_VELOCITY)
+        BAT_FLYING_VELOCITY = FLYING_ACCELERATION * FLYING_TIME
+        BAT_FALLING_VELOCITY = FALLING_ACCELERATION * FALLING_TIME
 
         if self.y < 0:
             self.y = 0
-            falling_time = 0
+            FALLING_TIME = 0
         elif self.y > self.world.height:
             self.y = self.world.height
-            flying_time = 0
+            FLYING_TIME = 0
 
 
-class World:
+class World():
 
     def __init__(self, width, height):
         self.width = width
@@ -69,16 +68,16 @@ class World:
         self.bat = Bat(self, int(self.width / 2), int(self.height / 2))
 
     def on_key_press(self, key, key_modifiers):
-        global state
+        global FLYING_STATE
         if key == arcade.key.SPACE:
-            state += 1
+            FLYING_STATE += 1
             print("press")
             # print(s)
 
     def on_key_release(self, key, key_modifiers):
-        global state
+        global FLYING_STATE
         if key == arcade.key.SPACE:
-            state = 0
+            FLYING_STATE = 0
         print("release")
         # print(s)
 
