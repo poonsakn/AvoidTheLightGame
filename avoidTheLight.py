@@ -6,16 +6,16 @@ SCREEN_WIDTH = 450
 SCREEN_HEIGHT = 600
 SCALE = 0.5
 
-SRC = {"bat" : "images/bat.png"}
- 
+SRC = {"bat": "images/bat.png",
+        "firefly": "images/firefly.png"}
+
+
 class ModelSprite(arcade.Sprite):
+
     def __init__(self, *args, **kwargs):
         self.model = kwargs.pop('model', None)
-     
-        # super().__init__(*args, **kwargs)
-        super().__init__(*args, SCALE)
-
-        
+        super().__init__(*args, **kwargs)
+        # super().__init__(*args, SCALE)
 
     def sync_with_model(self):
         if self.model:
@@ -25,16 +25,19 @@ class ModelSprite(arcade.Sprite):
         self.sync_with_model()
         super().draw()
 
+
 class AvoidTheLightGameWindow(arcade.Window):
+
     def __init__(self, width, height):
         super().__init__(width, height)
- 
+
         arcade.set_background_color(arcade.color.WHITE)
- 
+
         self.world = World(width, height)
         self.bat_sprite = ModelSprite(SRC['bat'], model=self.world.bat)
+        self.firefly_sprite = ModelSprite(SRC['firefly'], model=self.world.firefly)
         # print(type(self.bat_sprite))
-    
+
     def on_key_press(self, key, key_modifiers):
         self.world.on_key_press(key, key_modifiers)
 
@@ -44,7 +47,8 @@ class AvoidTheLightGameWindow(arcade.Window):
     def on_draw(self):
         arcade.start_render()
         self.bat_sprite.draw()
- 
+        self.firefly_sprite.draw()
+
     def animate(self, delta):
         self.world.animate(delta)
 

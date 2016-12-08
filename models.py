@@ -1,4 +1,5 @@
 import arcade.key
+import random
 
 FLYING_STATE = 0
 FALLING_ACCELERATION = -15
@@ -24,7 +25,7 @@ class Bat():
         global FALLING_TIME
         global BAT_FALLING_VELOCITY
         global BAT_FLYING_VELOCITY
-        
+
         if FLYING_STATE == 0:
             if BAT_FLYING_VELOCITY <= 0:
                 self.y += FALLING_ACCELERATION * FALLING_TIME * FALLING_TIME
@@ -32,7 +33,7 @@ class Bat():
                 FALLING_TIME += delta_time
             else:
                 self.y += BAT_FLYING_VELOCITY * FLYING_TIME + \
-                FALLING_ACCELERATION * FLYING_TIME * FLYING_TIME
+                    FALLING_ACCELERATION * FLYING_TIME * FLYING_TIME
                 FLYING_TIME -= delta_time
             print("FLYING_STATE 0")
 
@@ -46,7 +47,7 @@ class Bat():
                     FLYING_ACCELERATION * FALLING_TIME * FALLING_TIME
                 FALLING_TIME -= delta_time
             print("FLYING_STATE not 0")
-        
+
         print(BAT_FALLING_VELOCITY)
         BAT_FLYING_VELOCITY = FLYING_ACCELERATION * FLYING_TIME
         BAT_FALLING_VELOCITY = FALLING_ACCELERATION * FALLING_TIME
@@ -58,6 +59,11 @@ class Bat():
             self.y = self.world.height
             FLYING_TIME = 0
 
+class Firefly():
+    def __init__(self, world):
+        self.world = world
+        self.x = 20
+        self.y = 400
 
 class World():
 
@@ -66,6 +72,7 @@ class World():
         self.height = height
 
         self.bat = Bat(self, int(self.width / 2), int(self.height / 2))
+        self.firefly = Firefly(self)
 
     def on_key_press(self, key, key_modifiers):
         global FLYING_STATE
@@ -83,3 +90,4 @@ class World():
 
     def animate(self, delta):
         self.bat.animate(delta)
+        # self.firefly.animate(delta)
