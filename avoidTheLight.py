@@ -30,7 +30,7 @@ class AvoidTheLightGameWindow(arcade.Window):
     def __init__(self, width, height):
         super().__init__(width, height)
 
-        arcade.set_background_color((46, 53, 124, 0))
+        arcade.set_background_color((203, 203, 203, 0))
 
         self.world = World(width, height)
         self.bat_sprite = ModelSprite(SRC['bat'], model=self.world.bat)
