@@ -1,0 +1,16 @@
+FLYING_STATE = 0
+FALLING_ACCELERATION = -15
+FLYING_ACCELERATION = 20
+NUM_FIREFLY = 20
+FALLING_TIME = 0
+FLYING_TIME = 0
+BAT_FALLING_VELOCITY = 0
+BAT_FLYING_VELOCITY = 0
+
+SCREEN_WIDTH = 450
+SCREEN_HEIGHT = 600
+SCALE = 0.5
+
+SRC = {"bat": "images/bat.png",
+        "bat2": "images/bat2.png",
+        "firefly": "images/firefly.png"}

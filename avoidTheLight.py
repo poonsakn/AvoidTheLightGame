@@ -1,16 +1,10 @@
 import arcade
 import arcade.key
-import models
+import CONSTANT
 
 from models import World, Bat
 
-SCREEN_WIDTH = 450
-SCREEN_HEIGHT = 600
-SCALE = 0.5
 
-SRC = {"bat": "images/bat.png",
-        "bat2": "images/bat2.png",
-        "firefly": "images/firefly.png"}
 
 
 class ModelSprite(arcade.Sprite):
@@ -36,12 +30,12 @@ class AvoidTheLightGameWindow(arcade.Window):
         arcade.set_background_color((60, 60, 60, 0))
 
         self.world = World(width, height)
-        self.bat_sprite = ModelSprite(SRC['bat'], model=self.world.bat)
-        self.bat_sprite2 = ModelSprite(SRC['bat2'], model=self.world.bat)
+        self.bat_sprite = ModelSprite(CONSTANT.SRC['bat'], model=self.world.bat)
+        self.bat_sprite2 = ModelSprite(CONSTANT.SRC['bat2'], model=self.world.bat)
         self.firefly_sprites = []
 
         for firefly in self.world.fireflies:
-            self.firefly_sprites.append(ModelSprite(SRC['firefly'], model=firefly))
+            self.firefly_sprites.append(ModelSprite(CONSTANT.SRC['firefly'], model=firefly))
         
         
     def on_key_press(self, key, key_modifiers):
@@ -52,8 +46,8 @@ class AvoidTheLightGameWindow(arcade.Window):
 
     def on_draw(self):
         arcade.start_render()
-        print(models.FLYING_STATE)
-        if models.FLYING_STATE != 0:
+        print(CONSTANT.FLYING_STATE)
+        if CONSTANT.FLYING_STATE != 0:
             self.bat_sprite2.draw()
         else:
             self.bat_sprite.draw()
@@ -68,5 +62,6 @@ class AvoidTheLightGameWindow(arcade.Window):
         self.world.check_collision(self.bat_sprite, self.firefly_sprites)
 
 if __name__ == '__main__':
-    window = AvoidTheLightGameWindow(SCREEN_WIDTH, SCREEN_HEIGHT)
+    window = AvoidTheLightGameWindow(CONSTANT.SCREEN_WIDTH, CONSTANT.SCREEN_HEIGHT)
+
     arcade.run()
