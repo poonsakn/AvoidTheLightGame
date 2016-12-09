@@ -2,17 +2,20 @@ import arcade.key
 import random
 import CONSTANT
 
+
 class Bat():
+
     def __init__(self, world, x, y):
         self.world = world
         self.x = x
         self.y = y
-        self.hit_points = 10000+CONSTANT.NUM_FIREFLY
+        self.hit_points = 10000 + CONSTANT.NUM_FIREFLY
 
     def animate(self, delta_time):
         if CONSTANT.FLYING_STATE == 0:
             if CONSTANT.BAT_FLYING_VELOCITY <= 0:
-                self.y += CONSTANT.FALLING_ACCELERATION * CONSTANT.FALLING_TIME * CONSTANT.FALLING_TIME
+                self.y += CONSTANT.FALLING_ACCELERATION * \
+                    CONSTANT.FALLING_TIME * CONSTANT.FALLING_TIME
                 CONSTANT.FLYING_TIME = 0
                 CONSTANT.FALLING_TIME += delta_time
             else:
@@ -23,7 +26,8 @@ class Bat():
 
         elif CONSTANT.FLYING_STATE != 0:
             if CONSTANT.BAT_FALLING_VELOCITY >= 0:
-                self.y += CONSTANT.FLYING_ACCELERATION * CONSTANT.FLYING_TIME * CONSTANT.FLYING_TIME
+                self.y += CONSTANT.FLYING_ACCELERATION * \
+                    CONSTANT.FLYING_TIME * CONSTANT.FLYING_TIME
                 CONSTANT.FALLING_TIME = 0
                 CONSTANT.FLYING_TIME += delta_time
             else:
@@ -43,17 +47,21 @@ class Bat():
             self.y = self.world.height
             CONSTANT.FLYING_TIME = 0
 
+
 class Firefly():
+
     def __init__(self, world):
         self.world = world
         self.x = 800
         self.y = 800
-    
+
     def random_location(self):
         self.x = random.randrange(450)
         self.y = random.randrange(600)
 
+
 class World():
+
     def __init__(self, width, height):
         self.width = width
         self.height = height
@@ -63,7 +71,7 @@ class World():
         for i in range(CONSTANT.NUM_FIREFLY):
             self.firefly = Firefly(self)
             self.firefly.random_location()
-            # print('{0} x: {1} y: {2}'.format(i, self.firefly.x, self.firefly.y))       
+            # print('{0} x: {1} y: {2}'.format(i, self.firefly.x, self.firefly.y))
             self.fireflies.append(self.firefly)
 
     def on_key_press(self, key, key_modifiers):
@@ -81,7 +89,7 @@ class World():
     def animate(self, delta):
         self.bat.animate(delta)
         # self.firefly.animate(delta)
-    
+
     def check_collision(self, bat_sprite, firefly_sprites):
         # collision_list = arcade.check_for_collision_with_list(bat_sprite, firefly_sprites)
         # print(collision_list)
@@ -92,6 +100,6 @@ class World():
                 # print(self.bat.hit_points)
                 self.hp_lost()
         # print(self.bat.hit_points)
-        
+
     def hp_lost(self):
-        self.bat.hit_points -= 1         
+        self.bat.hit_points -= 1

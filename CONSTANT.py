@@ -12,5 +12,5 @@ SCREEN_HEIGHT = 600
 SCALE = 0.5
 
 SRC = {"bat": "images/bat.png",
-        "bat2": "images/bat2.png",
-        "firefly": "images/firefly.png"}
+       "bat2": "images/bat2.png",
+       "firefly": "images/firefly.png"}

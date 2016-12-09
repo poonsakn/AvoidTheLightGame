@@ -5,8 +5,6 @@ import CONSTANT
 from models import World, Bat
 
 
-
-
 class ModelSprite(arcade.Sprite):
 
     def __init__(self, *args, **kwargs):
@@ -22,6 +20,7 @@ class ModelSprite(arcade.Sprite):
         self.sync_with_model()
         super().draw()
 
+
 class AvoidTheLightGameWindow(arcade.Window):
 
     def __init__(self, width, height):
@@ -30,14 +29,16 @@ class AvoidTheLightGameWindow(arcade.Window):
         arcade.set_background_color((60, 60, 60, 0))
 
         self.world = World(width, height)
-        self.bat_sprite = ModelSprite(CONSTANT.SRC['bat'], model=self.world.bat)
-        self.bat_sprite2 = ModelSprite(CONSTANT.SRC['bat2'], model=self.world.bat)
+        self.bat_sprite = ModelSprite(
+            CONSTANT.SRC['bat'], model=self.world.bat)
+        self.bat_sprite2 = ModelSprite(
+            CONSTANT.SRC['bat2'], model=self.world.bat)
         self.firefly_sprites = []
 
         for firefly in self.world.fireflies:
-            self.firefly_sprites.append(ModelSprite(CONSTANT.SRC['firefly'], model=firefly))
-        
-        
+            self.firefly_sprites.append(ModelSprite(
+                CONSTANT.SRC['firefly'], model=firefly))
+
     def on_key_press(self, key, key_modifiers):
         self.world.on_key_press(key, key_modifiers)
 
@@ -53,7 +54,6 @@ class AvoidTheLightGameWindow(arcade.Window):
             self.bat_sprite.draw()
         # self.bat_sprite2.draw()
 
-        
         for sprite in self.firefly_sprites:
             sprite.draw()
 
@@ -62,6 +62,7 @@ class AvoidTheLightGameWindow(arcade.Window):
         self.world.check_collision(self.bat_sprite, self.firefly_sprites)
 
 if __name__ == '__main__':
-    window = AvoidTheLightGameWindow(CONSTANT.SCREEN_WIDTH, CONSTANT.SCREEN_HEIGHT)
+    window = AvoidTheLightGameWindow(
+        CONSTANT.SCREEN_WIDTH, CONSTANT.SCREEN_HEIGHT)
 
     arcade.run()
