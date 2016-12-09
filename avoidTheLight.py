@@ -25,7 +25,6 @@ class ModelSprite(arcade.Sprite):
         self.sync_with_model()
         super().draw()
 
-
 class AvoidTheLightGameWindow(arcade.Window):
 
     def __init__(self, width, height):
@@ -36,10 +35,8 @@ class AvoidTheLightGameWindow(arcade.Window):
         self.world = World(width, height)
         self.bat_sprite = ModelSprite(SRC['bat'], model=self.world.bat)
         self.firefly_sprites = []
-        n = 0
+
         for firefly in self.world.fireflies:
-            print(n)
-            n += 1
             self.firefly_sprites.append(ModelSprite(SRC['firefly'], model=firefly))
         
         
@@ -57,19 +54,7 @@ class AvoidTheLightGameWindow(arcade.Window):
 
     def animate(self, delta):
         self.world.animate(delta)
-        self.check_collision(self.bat_sprite, self.firefly_sprites)
-    
-    def check_collision(self, bat_sprite, firefly_sprites):
-        # collision_list = arcade.check_for_collision_with_list(bat_sprite, firefly_sprites)
-        # print(collision_list)
-        # print(len(collision_list))
-        for sprite in firefly_sprites:
-            is_collided = arcade.check_for_collision(bat_sprite, sprite)
-            print(is_collided)
-            n = 0
-            print(n)
-            n += 1
-        n = 0
+        self.world.check_collision(self.bat_sprite, self.firefly_sprites)
 
 if __name__ == '__main__':
     window = AvoidTheLightGameWindow(SCREEN_WIDTH, SCREEN_HEIGHT)
