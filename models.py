@@ -112,7 +112,7 @@ class World():
             if is_collided:
                 # print(self.bat.hit_points)
                 self.hp_lost()
-        print(self.bat.hit_points)
+        # print(self.bat.hit_points)
         
     def hp_lost(self):
         self.bat.hit_points -= 1         

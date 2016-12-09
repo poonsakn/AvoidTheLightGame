@@ -1,5 +1,7 @@
 import arcade
 import arcade.key
+import models
+
 from models import World, Bat
 
 SCREEN_WIDTH = 450
@@ -7,6 +9,7 @@ SCREEN_HEIGHT = 600
 SCALE = 0.5
 
 SRC = {"bat": "images/bat.png",
+        "bat2": "images/bat2.png",
         "firefly": "images/firefly.png"}
 
 
@@ -30,10 +33,11 @@ class AvoidTheLightGameWindow(arcade.Window):
     def __init__(self, width, height):
         super().__init__(width, height)
 
-        arcade.set_background_color((203, 203, 203, 0))
+        arcade.set_background_color((60, 60, 60, 0))
 
         self.world = World(width, height)
         self.bat_sprite = ModelSprite(SRC['bat'], model=self.world.bat)
+        self.bat_sprite2 = ModelSprite(SRC['bat2'], model=self.world.bat)
         self.firefly_sprites = []
 
         for firefly in self.world.fireflies:
@@ -48,7 +52,14 @@ class AvoidTheLightGameWindow(arcade.Window):
 
     def on_draw(self):
         arcade.start_render()
-        self.bat_sprite.draw()
+        print(models.FLYING_STATE)
+        if models.FLYING_STATE != 0:
+            self.bat_sprite2.draw()
+        else:
+            self.bat_sprite.draw()
+        # self.bat_sprite2.draw()
+
+        
         for sprite in self.firefly_sprites:
             sprite.draw()
 
