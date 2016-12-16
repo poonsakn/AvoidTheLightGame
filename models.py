@@ -9,6 +9,7 @@ class Bat():
         self.world = world
         self.x = x
         self.y = y
+        self.angle = 0
         self.hit_points = 10000 + CONSTANT.NUM_FIREFLY
 
     def animate(self, delta_time):
@@ -54,6 +55,13 @@ class Firefly():
         self.world = world
         self.x = 800
         self.y = 800
+        self.angle = 0
+    
+    def animate(self, delta_time):
+        self.random_direction()
+
+    def random_direction(self):
+        self.angle = random.randrange(360)
 
     def random_location(self):
         self.x = random.randrange(450)
@@ -71,6 +79,7 @@ class World():
         for i in range(CONSTANT.NUM_FIREFLY):
             self.firefly = Firefly(self)
             self.firefly.random_location()
+            # self.firefly.random_direction()
             # print('{0} x: {1} y: {2}'.format(i, self.firefly.x, self.firefly.y))
             self.fireflies.append(self.firefly)
 
@@ -88,6 +97,10 @@ class World():
 
     def animate(self, delta):
         self.bat.animate(delta)
+        
+        for firefly in self.fireflies:
+            firefly.animate(delta)
+
         # self.firefly.animate(delta)
 
     def check_collision(self, bat_sprite, firefly_sprites):
