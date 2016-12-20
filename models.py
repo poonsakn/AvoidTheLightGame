@@ -1,7 +1,7 @@
 import arcade.key
 import random
 import CONSTANT
-
+import math
 
 class Bat():
 
@@ -55,13 +55,22 @@ class Firefly():
         self.world = world
         self.x = 800
         self.y = 800
-        self.angle = 0
+        self.angle = random.randrange(360)
     
     def animate(self, delta_time):
         self.random_direction()
+        self.move_forward()
+
+    def move_forward(self):
+        self.x += math.sin(-math.radians(self.angle))
+        self.y += math.cos(-math.radians(self.angle))
 
     def random_direction(self):
-        self.angle = random.randrange(360)
+        direction = bool(random.getrandbits(1))
+        if direction:
+            self.angle += 5
+        else:
+            self.angle -= 5
 
     def random_location(self):
         self.x = random.randrange(450)
