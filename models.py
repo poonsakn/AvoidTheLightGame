@@ -26,7 +26,7 @@ class Bat():
                 CONSTANT.FLYING_TIME -= delta_time
             # print("FLYING_STATE 0")
 
-        elif CONSTANT.FLYING_STATE != 0:
+        elif CONSTANT.FLYING_STATE != 0 and self.bat_alive:
             if CONSTANT.BAT_FALLING_VELOCITY >= 0:
                 self.y += CONSTANT.FLYING_ACCELERATION * \
                     CONSTANT.FLYING_TIME * CONSTANT.FLYING_TIME
@@ -110,6 +110,9 @@ class World():
             CONSTANT.FLYING_STATE += 1
             # print("press")
             # print(s)
+        if key == arcade.key.R and not self.bat.bat_alive:
+            self.bat.bat_alive = True
+            self.bat.hit_points = 200
 
     def on_key_release(self, key, key_modifiers):
         if key == arcade.key.SPACE:
