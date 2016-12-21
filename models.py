@@ -10,8 +10,9 @@ class Bat():
         self.x = x
         self.y = y
         self.angle = 0
-        self.hit_points = 10000 + CONSTANT.NUM_FIREFLY
-
+        self.hit_points = 200 + CONSTANT.NUM_FIREFLY
+        self.bat_alive = True
+    
     def animate(self, delta_time):
         if CONSTANT.FLYING_STATE == 0:
             if CONSTANT.BAT_FLYING_VELOCITY <= 0:
@@ -41,7 +42,7 @@ class Bat():
         CONSTANT.BAT_FLYING_VELOCITY = CONSTANT.FLYING_ACCELERATION * CONSTANT.FLYING_TIME
         CONSTANT.BAT_FALLING_VELOCITY = CONSTANT.FALLING_ACCELERATION * CONSTANT.FALLING_TIME
 
-        if self.y < 0:
+        if self.y < 0 and self.bat_alive:
             self.y = 0
             CONSTANT.FALLING_TIME = 0
         elif self.y > self.world.height:
@@ -65,6 +66,18 @@ class Firefly():
         self.x += math.sin(-math.radians(self.angle))
         self.y += math.cos(-math.radians(self.angle))
 
+        if self.x > CONSTANT.SCREEN_WIDTH:
+            self.x = 0
+        
+        elif self.x < 0:
+            self.x = CONSTANT.SCREEN_WIDTH
+        
+        elif self.y > CONSTANT.SCREEN_HEIGHT:
+            self.y = 0
+        
+        elif self.y < 0:
+            self.y = CONSTANT.SCREEN_HEIGHT
+        
     def random_direction(self):
         direction = bool(random.getrandbits(1))
         if direction:
@@ -93,7 +106,7 @@ class World():
             self.fireflies.append(self.firefly)
 
     def on_key_press(self, key, key_modifiers):
-        if key == arcade.key.SPACE:
+        if key == arcade.key.SPACE and self.bat.bat_alive:
             CONSTANT.FLYING_STATE += 1
             # print("press")
             # print(s)
@@ -121,7 +134,13 @@ class World():
             if is_collided:
                 # print(self.bat.hit_points)
                 self.hp_lost()
+        if self.bat.hit_points <= 0:
+            self.bat.bat_alive = False
         # print(self.bat.hit_points)
+        
+        if not (self.bat.bat_alive):
+            print("bat is fucking dead")
 
     def hp_lost(self):
-        self.bat.hit_points -= 1
+        if self.bat.hit_points > 0:
+            self.bat.hit_points -= 1

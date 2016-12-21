@@ -53,11 +53,14 @@ class AvoidTheLightGameWindow(arcade.Window):
             self.bat_sprite2.draw()
         else:
             self.bat_sprite.draw()
-        # self.bat_sprite2.draw()
 
         for sprite in self.firefly_sprites:
             sprite.draw()
-
+        
+        arcade.draw_text("HP: " + str(self.world.bat.hit_points),
+                        20, CONSTANT.SCREEN_HEIGHT - 40, 
+                        arcade.color.WHITE, 15)
+        
     def animate(self, delta):
         self.world.animate(delta)
         self.world.check_collision(self.bat_sprite, self.firefly_sprites)
