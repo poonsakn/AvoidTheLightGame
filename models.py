@@ -19,6 +19,7 @@ class Bat():
         self.x = CONSTANT.SCREEN_WIDTH/2
         self.y = CONSTANT.SCREEN_HEIGHT/2
 
+        self.i = 0
         self.angle = 0
         self.hit_points = 200 + CONSTANT.NUM_FIREFLY
         self.alive = True
@@ -34,9 +35,11 @@ class Bat():
                 self.y += CONSTANT.BAT_FLYING_VELOCITY * CONSTANT.FLYING_TIME + \
                     CONSTANT.FALLING_ACCELERATION * CONSTANT.FLYING_TIME * CONSTANT.FLYING_TIME
                 CONSTANT.FLYING_TIME -= delta_time
-            # print("FLYING_STATE 0")
+
 
         elif CONSTANT.FLYING_STATE != 0 and self.alive:
+            print(self.i)
+            self.i += 1
             if CONSTANT.BAT_FALLING_VELOCITY >= 0:
                 self.y += CONSTANT.FLYING_ACCELERATION * \
                     CONSTANT.FLYING_TIME * CONSTANT.FLYING_TIME
@@ -46,20 +49,18 @@ class Bat():
                 self.y -= CONSTANT.BAT_FALLING_VELOCITY * CONSTANT.FALLING_TIME + \
                     CONSTANT.FLYING_ACCELERATION * CONSTANT.FALLING_TIME * CONSTANT.FALLING_TIME
                 CONSTANT.FALLING_TIME -= delta_time
-            # print("FLYING_STATE not 0")
 
-        # print(CONSTANT.BAT_FALLING_VELOCITY)
         CONSTANT.BAT_FLYING_VELOCITY = CONSTANT.FLYING_ACCELERATION * CONSTANT.FLYING_TIME
         CONSTANT.BAT_FALLING_VELOCITY = CONSTANT.FALLING_ACCELERATION * CONSTANT.FALLING_TIME
 
-        if self.y < 0 and self.alive:
-            self.y = 0
+        if self.y < 25 and self.alive:
+            self.y = 25
             CONSTANT.FALLING_TIME = 0
         elif self.y < -100 and not self.alive:
             self.y = -100
             CONSTANT.FALLING_TIME = 0
-        elif self.y > self.world.height:
-            self.y = self.world.height
+        elif self.y > self.world.height-25:
+            self.y = self.world.height-25
             CONSTANT.FLYING_TIME = 0
 
 class Firefly():
@@ -107,22 +108,20 @@ class World():
     def __init__(self, width, height):
         self.width = width
         self.height = height
+        
 
+        
         self.bat = Bat(self)
         self.fireflies = []
         for i in range(CONSTANT.NUM_FIREFLY):
             self.firefly = Firefly(self)
             self.firefly.random_location()
-            # self.firefly.random_direction()
-            # print('{0} x: {1} y: {2}'.format(i, self.firefly.x, self.firefly.y))
             self.fireflies.append(self.firefly)
-        
 
     def on_key_press(self, key, key_modifiers):
         if key == arcade.key.SPACE and self.bat.alive:
-            CONSTANT.FLYING_STATE += 1
-            # print("press")
-            # print(s)
+            CONSTANT.FLYING_STATE = 1
+            # print("d")
 
         if key == arcade.key.R and not self.bat.alive:
             self.bat = Bat(self)
@@ -141,30 +140,23 @@ class World():
         for firefly in self.fireflies:
             firefly.animate(delta)
 
-        # self.firefly.animate(delta)
-
     def check_collision(self, bat_sprite, firefly_sprites):
-        # collision_list = arcade.check_for_collision_with_list(bat_sprite, firefly_sprites)
-        # print(collision_list)
-        # print(len(collision_list))
+        self.final_collided = 0
         for sprite in firefly_sprites:
             is_collided = arcade.check_for_collision(bat_sprite, sprite)
             if is_collided:
-                # print(self.bat.hit_points)
-                self.hp_lost()
-                CONSTANT.COLLIDED = True
-            elif not is_collided:
-                CONSTANT.COLLIDED = False
-                print("rpintassiht")
-            # print(self.collided)
-
+                self.final_collided += 1
+         
+        if self.final_collided > 0:
+            self.hp_lost()
+            CONSTANT.COLLIDED = True
+        else:
+            CONSTANT.COLLIDED = False
+        self.final_collided = 0
 
         if self.bat.hit_points <= 0:
             self.bat.alive = False
-        # print(self.bat.hit_points)
-        
-        # if not (self.bat.alive):
-            # print("bat is fucking dead")
+       
 
     def hp_lost(self):
         if self.bat.hit_points > 0:

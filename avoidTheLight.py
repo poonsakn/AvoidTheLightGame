@@ -37,6 +37,7 @@ class AvoidTheLightGameWindow(arcade.Window):
         for firefly in self.world.fireflies:
             self.firefly_sprites.append(ModelSprite(
                 CONSTANT.SRC['firefly'], model=firefly))
+        
         self.touched_sprite = arcade.Sprite(CONSTANT.SRC['touched'], 2)
         self.touched_sprite.set_position(CONSTANT.SCREEN_WIDTH/2, CONSTANT.SCREEN_HEIGHT/2)
 
@@ -58,6 +59,9 @@ class AvoidTheLightGameWindow(arcade.Window):
             sprite.draw()
         
         
+        if CONSTANT.COLLIDED:
+            self.touched_sprite.draw()
+            # print(CONSTANT.COLLIDED)
         
         arcade.draw_text("HP: " + str(self.world.bat.hit_points),
                         20, CONSTANT.SCREEN_HEIGHT - 40, 
@@ -66,12 +70,7 @@ class AvoidTheLightGameWindow(arcade.Window):
     def animate(self, delta):
         self.world.animate(delta)
         self.world.check_collision(self.bat_sprite, self.firefly_sprites)
-       
-        arcade.start_render()
-        if CONSTANT.COLLIDED:
-            # print(CONSTANT.COLLIDED)
-            self.touched_sprite.draw()
-
+         
         if CONSTANT.RESTART:
             self.init_sprite()
 
