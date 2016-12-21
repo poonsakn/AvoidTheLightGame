@@ -38,8 +38,8 @@ class AvoidTheLightGameWindow(arcade.Window):
             self.firefly_sprites.append(ModelSprite(
                 CONSTANT.SRC['firefly'], model=firefly))
         
-        self.touched_sprite = arcade.Sprite(CONSTANT.SRC['touched'], 2)
-        self.touched_sprite.set_position(CONSTANT.SCREEN_WIDTH/2, CONSTANT.SCREEN_HEIGHT/2)
+        self.touched_sprite = arcade.Sprite(CONSTANT.SRC['touched'], 4)
+
 
     def on_key_press(self, key, key_modifiers):
         self.world.on_key_press(key, key_modifiers)
@@ -60,6 +60,8 @@ class AvoidTheLightGameWindow(arcade.Window):
         
         
         if CONSTANT.COLLIDED:
+            # self.touched_sprite.set_position(CONSTANT.SCREEN_WIDTH/2, CONSTANT.SCREEN_HEIGHT/2)
+            self.touched_sprite.set_position(self.world.bat.x, self.world.bat.y)
             self.touched_sprite.draw()
             # print(CONSTANT.COLLIDED)
         
@@ -69,7 +71,7 @@ class AvoidTheLightGameWindow(arcade.Window):
         
     def animate(self, delta):
         self.world.animate(delta)
-        self.world.check_collision(self.bat_sprite, self.firefly_sprites)
+        self.world.check_collision(delta, self.bat_sprite, self.firefly_sprites)
          
         if CONSTANT.RESTART:
             self.init_sprite()

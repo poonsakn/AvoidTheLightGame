@@ -140,19 +140,21 @@ class World():
         for firefly in self.fireflies:
             firefly.animate(delta)
 
-    def check_collision(self, bat_sprite, firefly_sprites):
+    def check_collision(self, delta, bat_sprite, firefly_sprites):
         self.final_collided = 0
         for sprite in firefly_sprites:
             is_collided = arcade.check_for_collision(bat_sprite, sprite)
             if is_collided:
                 self.final_collided += 1
-         
+            
         if self.final_collided > 0:
             self.hp_lost()
             CONSTANT.COLLIDED = True
         else:
             CONSTANT.COLLIDED = False
+            CONSTANT.TIME_UNTIL_GET_HIT -= delta
         self.final_collided = 0
+        print(CONSTANT.TIME_UNTIL_GET_HIT)
 
         if self.bat.hit_points <= 0:
             self.bat.alive = False
