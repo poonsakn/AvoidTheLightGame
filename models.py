@@ -38,8 +38,7 @@ class Bat():
 
 
         elif CONSTANT.FLYING_STATE != 0 and self.alive:
-            print(self.i)
-            self.i += 1
+
             if CONSTANT.BAT_FALLING_VELOCITY >= 0:
                 self.y += CONSTANT.FLYING_ACCELERATION * \
                     CONSTANT.FLYING_TIME * CONSTANT.FLYING_TIME
@@ -62,7 +61,8 @@ class Bat():
         elif self.y > self.world.height-25:
             self.y = self.world.height-25
             CONSTANT.FLYING_TIME = 0
-
+        
+        print ('x- {0},  y- {1}'.format(self.x,self.y))
 class Firefly():
 
     def __init__(self, world):
@@ -154,7 +154,7 @@ class World():
             CONSTANT.COLLIDED = False
             CONSTANT.TIME_UNTIL_GET_HIT -= delta
         self.final_collided = 0
-        print(CONSTANT.TIME_UNTIL_GET_HIT)
+        # print(CONSTANT.TIME_UNTIL_GET_HIT)
 
         if self.bat.hit_points <= 0:
             self.bat.alive = False
