@@ -1,17 +1,27 @@
 import arcade.key
 import random
 import CONSTANT
+import ORIGINAL_CONSTANT
 import math
 
 class Bat():
 
-    def __init__(self, world, x, y):
+    def __init__(self, world):
         self.world = world
-        self.x = x
-        self.y = y
+        CONSTANT.FLYING_STATE = ORIGINAL_CONSTANT.FLYING_STATE
+        FALLING_ACCELERATION = ORIGINAL_CONSTANT.FALLING_ACCELERATION
+        FLYING_ACCELERATION = ORIGINAL_CONSTANT.FLYING_ACCELERATION
+        FALLING_TIME = ORIGINAL_CONSTANT.FALLING_TIME
+        FLYING_TIME = ORIGINAL_CONSTANT.FLYING_TIME
+        BAT_FALLING_VELOCITY = ORIGINAL_CONSTANT.BAT_FALLING_VELOCITY
+        BAT_FLYING_VELOCITY = ORIGINAL_CONSTANT.BAT_FLYING_VELOCITY
+
+        self.x = CONSTANT.SCREEN_WIDTH/2
+        self.y = CONSTANT.SCREEN_HEIGHT/2
+
         self.angle = 0
         self.hit_points = 200 + CONSTANT.NUM_FIREFLY
-        self.bat_alive = True
+        self.alive = True
     
     def animate(self, delta_time):
         if CONSTANT.FLYING_STATE == 0:
@@ -26,7 +36,7 @@ class Bat():
                 CONSTANT.FLYING_TIME -= delta_time
             # print("FLYING_STATE 0")
 
-        elif CONSTANT.FLYING_STATE != 0 and self.bat_alive:
+        elif CONSTANT.FLYING_STATE != 0 and self.alive:
             if CONSTANT.BAT_FALLING_VELOCITY >= 0:
                 self.y += CONSTANT.FLYING_ACCELERATION * \
                     CONSTANT.FLYING_TIME * CONSTANT.FLYING_TIME
@@ -42,13 +52,15 @@ class Bat():
         CONSTANT.BAT_FLYING_VELOCITY = CONSTANT.FLYING_ACCELERATION * CONSTANT.FLYING_TIME
         CONSTANT.BAT_FALLING_VELOCITY = CONSTANT.FALLING_ACCELERATION * CONSTANT.FALLING_TIME
 
-        if self.y < 0 and self.bat_alive:
+        if self.y < 0 and self.alive:
             self.y = 0
+            CONSTANT.FALLING_TIME = 0
+        elif self.y < -100 and not self.alive:
+            self.y = -100
             CONSTANT.FALLING_TIME = 0
         elif self.y > self.world.height:
             self.y = self.world.height
             CONSTANT.FLYING_TIME = 0
-
 
 class Firefly():
 
@@ -96,7 +108,7 @@ class World():
         self.width = width
         self.height = height
 
-        self.bat = Bat(self, int(self.width / 2), int(self.height / 2))
+        self.bat = Bat(self)
         self.fireflies = []
         for i in range(CONSTANT.NUM_FIREFLY):
             self.firefly = Firefly(self)
@@ -104,14 +116,17 @@ class World():
             # self.firefly.random_direction()
             # print('{0} x: {1} y: {2}'.format(i, self.firefly.x, self.firefly.y))
             self.fireflies.append(self.firefly)
+        
 
     def on_key_press(self, key, key_modifiers):
-        if key == arcade.key.SPACE and self.bat.bat_alive:
+        if key == arcade.key.SPACE and self.bat.alive:
             CONSTANT.FLYING_STATE += 1
             # print("press")
             # print(s)
-        if key == arcade.key.R and not self.bat.bat_alive:
-            self.bat.bat_alive = True
+
+        if key == arcade.key.R and not self.bat.alive:
+            self.bat = Bat(self)
+            CONSTANT.RESTART = True
             self.bat.hit_points = 200
 
     def on_key_release(self, key, key_modifiers):
@@ -137,12 +152,19 @@ class World():
             if is_collided:
                 # print(self.bat.hit_points)
                 self.hp_lost()
+                CONSTANT.COLLIDED = True
+            elif not is_collided:
+                CONSTANT.COLLIDED = False
+                print("rpintassiht")
+            # print(self.collided)
+
+
         if self.bat.hit_points <= 0:
-            self.bat.bat_alive = False
+            self.bat.alive = False
         # print(self.bat.hit_points)
         
-        if not (self.bat.bat_alive):
-            print("bat is fucking dead")
+        # if not (self.bat.alive):
+            # print("bat is fucking dead")
 
     def hp_lost(self):
         if self.bat.hit_points > 0:
