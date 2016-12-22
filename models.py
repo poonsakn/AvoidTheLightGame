@@ -62,7 +62,6 @@ class Bat():
             self.y = CONSTANT.SCREEN_HEIGHT-25
             CONSTANT.FLYING_TIME = 0
         
-        # print ('x- {0},  y- {1}'.format(self.x,self.y))
 class Firefly():
 
     def __init__(self, world):
@@ -123,8 +122,6 @@ class World():
     def on_key_press(self, key, key_modifiers):
         if key == arcade.key.SPACE and CONSTANT.BAT_ALIVE:
             CONSTANT.FLYING_STATE = 1
-            CONSTANT.TIMER = 3
-            # print("d")
 
         if (key == arcade.key.S or key == arcade.key.R) and not CONSTANT.BAT_ALIVE:
             if CONSTANT.RESTART:
@@ -141,8 +138,6 @@ class World():
     def on_key_release(self, key, key_modifiers):
         if key == arcade.key.SPACE:
             CONSTANT.FLYING_STATE = 0
-        # print("release")
-        # print(s)
 
     def animate(self, delta):
         if CONSTANT.BAT_ALIVE:
@@ -152,15 +147,11 @@ class World():
             firefly.animate(delta)
 
     def check_collision(self, delta, bat_sprite, firefly_sprites):
-        # print("checking collision_")
         self.final_collided = 0
         for sprite in firefly_sprites:
-            # print(bat_sprite.center_x)
             is_collided = arcade.check_for_collision(bat_sprite, sprite)
-            # print(sprite.center_x)
             if is_collided:
                 self.final_collided += 1
-                # print("collided")
             
         if self.final_collided > 0:
             self.hp_lost()
@@ -169,7 +160,6 @@ class World():
             CONSTANT.COLLIDED = False
             CONSTANT.TIME_UNTIL_GET_HIT -= delta
         self.final_collided = 0
-        # print(CONSTANT.TIME_UNTIL_GET_HIT)
 
         if self.bat.hit_points <= 0:
             CONSTANT.BAT_ALIVE = False
