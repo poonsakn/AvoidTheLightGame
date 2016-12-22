@@ -6,6 +6,8 @@ FLYING_TIME = 0
 BAT_FALLING_VELOCITY = 0
 BAT_FLYING_VELOCITY = 0
 TIME_UNTIL_GET_HIT = 3
+SCORE = 0
+HIGH_SCORE = 0
 
 NUM_FIREFLY = 1
 
@@ -22,4 +24,5 @@ SRC = {"bat": "images/bat.png",
        "bat2": "images/bat2.png",
        "firefly": "images/firefly.png",
        "touched": "images/touched.png",
-       "background": "images/background3.jpeg"}
+       "background": "images/background3.jpeg",
+       "gametitle": "images/gametitle.png"}

@@ -134,6 +134,9 @@ class World():
             CONSTANT.RESTART = True
             CONSTANT.FRONT_PAGE = False
             self.bat.hit_points = 200
+            if CONSTANT.SCORE > CONSTANT.HIGH_SCORE:
+                CONSTANT.HIGH_SCORE = CONSTANT.SCORE
+            CONSTANT.SCORE = 0
 
     def on_key_release(self, key, key_modifiers):
         if key == arcade.key.SPACE:
