@@ -1,12 +1,11 @@
 import arcade
 import arcade.key
 import CONSTANT
+import math
 
 from models import World, Bat
 
-
 class ModelSprite(arcade.Sprite):
-
     def __init__(self, *args, **kwargs):
         self.model = kwargs.pop('model', None)
         super().__init__(*args, **kwargs)
@@ -21,9 +20,7 @@ class ModelSprite(arcade.Sprite):
         self.sync_with_model()
         super().draw()
 
-
 class AvoidTheLightGameWindow(arcade.Window):
-
     def __init__(self, width, height):
         super().__init__(width, height)
 
@@ -31,13 +28,9 @@ class AvoidTheLightGameWindow(arcade.Window):
 
         self.background_sprite = arcade.Sprite(CONSTANT.SRC['background'], CONSTANT.SCREEN_HEIGHT/1080)
         self.background_sprite.set_position(CONSTANT.SCREEN_WIDTH/2, CONSTANT.SCREEN_HEIGHT/2)
-        self.world = World(width, height)
-        self.init_sprite()
-        self.firefly_sprites = []
-        for firefly in self.world.fireflies:
-            self.firefly_sprites.append(ModelSprite(
-                CONSTANT.SRC['firefly'], model=firefly))
-        
+        self.world = World()
+        self.init_bat_sprite()
+        self.refresh_firefly_sprite()        
         self.touched_sprite = arcade.Sprite(CONSTANT.SRC['touched'], 4)
 
     def on_key_press(self, key, key_modifiers):
@@ -55,8 +48,19 @@ class AvoidTheLightGameWindow(arcade.Window):
         elif CONSTANT.BAT_ALIVE:
             self.bat_sprite.draw()
 
-        for sprite in self.firefly_sprites:
-            sprite.draw()
+        if len(self.firefly_sprites) != 0:
+            print(len(self.firefly_sprites))
+            for sprite in self.firefly_sprites:
+                sprite.draw()
+        
+        if CONSTANT.FRONT_PAGE:
+            arcade.draw_text("press S to start",
+                CONSTANT.SCREEN_WIDTH/2 - 60, 0.14*CONSTANT.SCREEN_HEIGHT,
+                arcade.color.WHITE, 15)
+        if not CONSTANT.BAT_ALIVE and not CONSTANT.FRONT_PAGE:
+            arcade.draw_text("press R to try again",
+                CONSTANT.SCREEN_WIDTH/2 - 60, 0.14*CONSTANT.SCREEN_HEIGHT,
+                arcade.color.WHITE, 15)
 
         if CONSTANT.COLLIDED:
             # self.touched_sprite.set_position(CONSTANT.SCREEN_WIDTH/2, CONSTANT.SCREEN_HEIGHT/2)
@@ -77,15 +81,15 @@ class AvoidTheLightGameWindow(arcade.Window):
         #     arcade.draw_text("x " + str(int(self.bat_sprite.center_x)) + "y" + str(int(self.bat_sprite.center_x)),
         #             self.bat_sprite.center_x, self.bat_sprite.center_y, arcade.color.WHITE, 10)
         if CONSTANT.BAT_ALIVE:
-            arcade.draw_text("HP: " + str(self.world.bat.hit_points),
+            arcade.draw_text("HP: " + str(math.ceil(self.world.bat.hit_points/10)),
                             20, CONSTANT.SCREEN_HEIGHT - 40,
                             arcade.color.WHITE, 15)
 
     def animate(self, delta):        
         self.world.animate(delta)
         if CONSTANT.RESTART:
-            self.init_sprite()
-
+            self.init_bat_sprite()
+            
         if CONSTANT.BAT_ALIVE:
             # print("checking collision")
             self.bat_sprite.center_x = self.world.bat.x
@@ -93,24 +97,24 @@ class AvoidTheLightGameWindow(arcade.Window):
             self.world.check_collision(
                 delta, self.bat_sprite, self.firefly_sprites)
 
-        
-
-    def init_sprite(self):
+        if CONSTANT.TIME_UNTIL_GET_HIT <= 0:
+            self.world.add_firefly()
+            self.refresh_firefly_sprite()
+    
+    def refresh_firefly_sprite(self):
+        self.firefly_sprites = []
+        for firefly in self.world.fireflies:
+            self.firefly_sprites.append(ModelSprite(
+                CONSTANT.SRC['firefly'], model=firefly))
+    
+    def init_bat_sprite(self):
         if CONSTANT.BAT_ALIVE:
-            
             self.bat_sprite = ModelSprite(
                 CONSTANT.SRC['bat'], model=self.world.bat)
-
-            # print("self world bat x")
-            # print(self.world.bat.x)
-            # print("self bat sprite x")
-            # print(self.bat_sprite.center_x)
-            
             self.bat_sprite2 = ModelSprite(
                 CONSTANT.SRC['bat2'], model=self.world.bat)
 
 if __name__ == '__main__':
     window = AvoidTheLightGameWindow(
         CONSTANT.SCREEN_WIDTH, CONSTANT.SCREEN_HEIGHT)
-
     arcade.run()

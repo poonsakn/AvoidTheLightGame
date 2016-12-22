@@ -21,7 +21,7 @@ class Bat():
 
         self.i = 0
         self.angle = 0
-        self.hit_points = 200 + CONSTANT.NUM_FIREFLY
+        self.hit_points = 999999
         CONSTANT.BAT_ALIVE = True
     
     def animate(self, delta_time):
@@ -58,8 +58,8 @@ class Bat():
         elif self.y < -100 and not CONSTANT.BAT_ALIVE:
             self.y = -100
             CONSTANT.FALLING_TIME = 0
-        elif self.y > self.world.height-25:
-            self.y = self.world.height-25
+        elif self.y > CONSTANT.SCREEN_HEIGHT-25:
+            self.y = CONSTANT.SCREEN_HEIGHT-25
             CONSTANT.FLYING_TIME = 0
         
         # print ('x- {0},  y- {1}'.format(self.x,self.y))
@@ -104,30 +104,35 @@ class Firefly():
 
 
 class World():
-    
-    
+    def __init__(self):
+        self.create_fireflies()
 
-    def __init__(self, width, height):
-        self.width = width
-        self.height = height
-        
-        # self.bat = Bat(self)
-
-
+    def create_fireflies(self):
         self.fireflies = []
         for i in range(CONSTANT.NUM_FIREFLY):
-            self.firefly = Firefly(self)
-            self.firefly.random_location()
-            self.fireflies.append(self.firefly)
+            self.add_firefly()
+
+    def add_firefly(self):
+        self.firefly = Firefly(self)
+        self.firefly.random_location()
+        self.fireflies.append(self.firefly)
+        CONSTANT.TIME_UNTIL_GET_HIT = 3
+
+
 
     def on_key_press(self, key, key_modifiers):
         if key == arcade.key.SPACE and CONSTANT.BAT_ALIVE:
             CONSTANT.FLYING_STATE = 1
+            CONSTANT.TIMER = 3
             # print("d")
 
-        if key == arcade.key.R and not CONSTANT.BAT_ALIVE:
+        if (key == arcade.key.S or key == arcade.key.R) and not CONSTANT.BAT_ALIVE:
+            if CONSTANT.RESTART:
+                for j in range(0,len(self.fireflies)):
+                    self.fireflies.pop()
             self.bat = Bat(self)
             CONSTANT.RESTART = True
+            CONSTANT.FRONT_PAGE = False
             self.bat.hit_points = 200
 
     def on_key_release(self, key, key_modifiers):
@@ -161,7 +166,7 @@ class World():
             CONSTANT.COLLIDED = False
             CONSTANT.TIME_UNTIL_GET_HIT -= delta
         self.final_collided = 0
-        print(CONSTANT.TIME_UNTIL_GET_HIT)
+        # print(CONSTANT.TIME_UNTIL_GET_HIT)
 
         if self.bat.hit_points <= 0:
             CONSTANT.BAT_ALIVE = False
