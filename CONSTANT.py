@@ -18,4 +18,5 @@ SCALE = 0.5
 SRC = {"bat": "images/bat.png",
        "bat2": "images/bat2.png",
        "firefly": "images/firefly.png",
-       "touched": "images/touched.png"}
+       "touched": "images/touched.png",
+       "background": "images/background.png"}

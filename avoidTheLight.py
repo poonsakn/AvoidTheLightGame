@@ -38,6 +38,8 @@ class AvoidTheLightGameWindow(arcade.Window):
                 CONSTANT.SRC['firefly'], model=firefly))
 
         self.touched_sprite = arcade.Sprite(CONSTANT.SRC['touched'], 4)
+        self.background_sprite = arcade.Sprite(CONSTANT.SRC['background'], CONSTANT.SCREEN_HEIGHT/1080)
+        self.background_sprite.set_position(CONSTANT.SCREEN_WIDTH/2, CONSTANT.SCREEN_HEIGHT/2)
 
     def on_key_press(self, key, key_modifiers):
         self.world.on_key_press(key, key_modifiers)
@@ -48,6 +50,7 @@ class AvoidTheLightGameWindow(arcade.Window):
     def on_draw(self):
         arcade.start_render()
         # print(CONSTANT.FLYING_STATE)
+        self.background_sprite.draw()
         if CONSTANT.FLYING_STATE != 0:
             self.bat_sprite2.draw()
         else:
