@@ -29,17 +29,19 @@ class AvoidTheLightGameWindow(arcade.Window):
 
         arcade.set_background_color((60, 60, 60, 0))
 
+        self.background_sprite = arcade.Sprite(CONSTANT.SRC['background'], CONSTANT.SCREEN_HEIGHT/1080)
+        self.background_sprite.set_position(CONSTANT.SCREEN_WIDTH/2, CONSTANT.SCREEN_HEIGHT/2)
         self.world = World(width, height)
-        self.init_sprite()
+
+    def create_game(self, width, height):
+        # self.init_sprite()
         self.firefly_sprites = []
 
         for firefly in self.world.fireflies:
             self.firefly_sprites.append(ModelSprite(
                 CONSTANT.SRC['firefly'], model=firefly))
-
+        
         self.touched_sprite = arcade.Sprite(CONSTANT.SRC['touched'], 4)
-        self.background_sprite = arcade.Sprite(CONSTANT.SRC['background'], CONSTANT.SCREEN_HEIGHT/1080)
-        self.background_sprite.set_position(CONSTANT.SCREEN_WIDTH/2, CONSTANT.SCREEN_HEIGHT/2)
 
     def on_key_press(self, key, key_modifiers):
         self.world.on_key_press(key, key_modifiers)
@@ -71,12 +73,13 @@ class AvoidTheLightGameWindow(arcade.Window):
                          arcade.color.WHITE, 15)
 
     def animate(self, delta):
+        self.create_game(self.width, self.height)
         self.world.animate(delta)
         self.world.check_collision(
             delta, self.bat_sprite, self.firefly_sprites)
 
-        if CONSTANT.RESTART:
-            self.init_sprite()
+        # if CONSTANT.RESTART:
+        #     self.init_sprite()
 
     def init_sprite(self):
         self.bat_sprite = ModelSprite(

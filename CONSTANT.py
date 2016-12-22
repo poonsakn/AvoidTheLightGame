@@ -9,6 +9,7 @@ TIME_UNTIL_GET_HIT = 5
 
 NUM_FIREFLY = 7
 
+START_PRESSED = False
 COLLIDED = False
 RESTART = False
 
@@ -19,4 +20,4 @@ SRC = {"bat": "images/bat.png",
        "bat2": "images/bat2.png",
        "firefly": "images/firefly.png",
        "touched": "images/touched.png",
-       "background": "images/background.png"}
+       "background": "images/background3.jpeg"}
