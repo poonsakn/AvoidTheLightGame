@@ -161,7 +161,7 @@ class World():
             CONSTANT.COLLIDED = False
             CONSTANT.TIME_UNTIL_GET_HIT -= delta
         self.final_collided = 0
-        # print(CONSTANT.TIME_UNTIL_GET_HIT)
+        print(CONSTANT.TIME_UNTIL_GET_HIT)
 
         if self.bat.hit_points <= 0:
             CONSTANT.BAT_ALIVE = False
