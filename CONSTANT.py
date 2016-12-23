@@ -11,6 +11,7 @@ HIGH_SCORE = 0
 
 NUM_FIREFLY = 1
 
+BUG_REPELLER = False
 FRONT_PAGE = True
 COLLIDED = False
 RESTART = False
@@ -25,4 +26,5 @@ SRC = {"bat": "images/bat.png",
        "firefly": "images/firefly.png",
        "touched": "images/touched.png",
        "background": "images/background3.jpeg",
-       "gametitle": "images/gametitle.png"}
+       "gametitle": "images/gametitle.png",
+       "repel": "images/repel.png"}

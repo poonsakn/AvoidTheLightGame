@@ -27,6 +27,7 @@ class AvoidTheLightGameWindow(arcade.Window):
         self.gametitle_sprite.set_position(CONSTANT.SCREEN_WIDTH/2, CONSTANT.SCREEN_HEIGHT/2)
         self.background_sprite = arcade.Sprite(CONSTANT.SRC['background'], CONSTANT.SCREEN_HEIGHT/1080)
         self.background_sprite.set_position(CONSTANT.SCREEN_WIDTH/2, CONSTANT.SCREEN_HEIGHT/2)
+        self.repel_sprite = arcade.Sprite(CONSTANT.SRC['repel'], 1)
         self.world = World()
         self.init_bat_sprite()
         self.refresh_firefly_sprite()        
@@ -45,6 +46,9 @@ class AvoidTheLightGameWindow(arcade.Window):
             self.bat_sprite2.draw()
         elif CONSTANT.BAT_ALIVE:
             self.bat_sprite.draw()
+            if CONSTANT.BUG_REPELLER:
+                self.repel_sprite.set_position(self.world.bat.x, self.world.bat.y)
+                self.repel_sprite.draw()
 
         if len(self.firefly_sprites) != 0:
             for sprite in self.firefly_sprites:
@@ -55,9 +59,12 @@ class AvoidTheLightGameWindow(arcade.Window):
             arcade.draw_text("press S to start",
                 CONSTANT.SCREEN_WIDTH/2 - 60, 0.14*CONSTANT.SCREEN_HEIGHT,
                 arcade.color.WHITE, 15)
-            arcade.draw_text("Intruction: press Spacebar to fly!",
-                15, 15,
-                arcade.color.WHITE, 15)
+            arcade.draw_text("instruction: press Spacebar to fly!",
+                15, 25,
+                arcade.color.WHITE, 13)
+            arcade.draw_text("and press Q to repel the bug away!",
+                15, 10,
+                arcade.color.WHITE, 13)
         if not CONSTANT.BAT_ALIVE and not CONSTANT.FRONT_PAGE:
             arcade.draw_text("press R to try again",
                 CONSTANT.SCREEN_WIDTH/2 - 95, 0.14*CONSTANT.SCREEN_HEIGHT,
@@ -83,7 +90,8 @@ class AvoidTheLightGameWindow(arcade.Window):
                             20, CONSTANT.SCREEN_HEIGHT - 70,
                             arcade.color.WHITE, 15)
 
-    def animate(self, delta):        
+    def animate(self, delta):     
+        print(CONSTANT.BUG_REPELLER)   
         self.world.animate(delta)
         if CONSTANT.RESTART:
             self.init_bat_sprite()

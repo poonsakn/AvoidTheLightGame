@@ -123,6 +123,9 @@ class World():
         if key == arcade.key.SPACE and CONSTANT.BAT_ALIVE:
             CONSTANT.FLYING_STATE = 1
 
+        if key == arcade.key.Q and CONSTANT.BAT_ALIVE:
+            CONSTANT.BUG_REPELLER = True
+
         if (key == arcade.key.S or key == arcade.key.R) and not CONSTANT.BAT_ALIVE:
             if CONSTANT.RESTART:
                 for j in range(0,len(self.fireflies)):
@@ -138,13 +141,28 @@ class World():
     def on_key_release(self, key, key_modifiers):
         if key == arcade.key.SPACE:
             CONSTANT.FLYING_STATE = 0
+            CONSTANT.BUG_REPELLER = False
 
     def animate(self, delta):
         if CONSTANT.BAT_ALIVE:
             self.bat.animate(delta)
+            if CONSTANT.BUG_REPELLER:
+                self.repel()
+                CONSTANT.SCORE -= 1
         
         for firefly in self.fireflies:
             firefly.animate(delta)
+    def repel(self):
+        for firefly in self.fireflies:
+            if (abs(firefly.x-self.bat.x)<70.0 and abs(firefly.y-self.bat.y)<70.0):
+                if firefly.x < self.bat.x:
+                    firefly.x -= 3
+                elif firefly.x > self.bat.y:
+                    firefly.x += 3
+                elif firefly.y < self.bat.y:
+                    firefly.y -= 3
+                elif firefly.y > self.bat.y:
+                    firefly.y += 3
 
     def check_collision(self, delta, bat_sprite, firefly_sprites):
         self.final_collided = 0
