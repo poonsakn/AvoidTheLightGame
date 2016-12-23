@@ -31,7 +31,7 @@ class AvoidTheLightGameWindow(arcade.Window):
         self.world = World()
         self.init_bat_sprite()
         self.refresh_firefly_sprite()        
-        self.touched_sprite = arcade.Sprite(CONSTANT.SRC['touched'], 2.3)
+        self.touched_sprite = arcade.Sprite(CONSTANT.SRC['touched'], 3.2)
 
     def on_key_press(self, key, key_modifiers):
         self.world.on_key_press(key, key_modifiers)
@@ -62,7 +62,7 @@ class AvoidTheLightGameWindow(arcade.Window):
             arcade.draw_text("instruction: press Spacebar to fly!",
                 15, 25,
                 arcade.color.WHITE, 13)
-            arcade.draw_text("and press Q to repel the bug away!",
+            arcade.draw_text("and press B to repel the bug away!",
                 15, 10,
                 arcade.color.WHITE, 13)
         if not CONSTANT.BAT_ALIVE and not CONSTANT.FRONT_PAGE:
@@ -91,7 +91,7 @@ class AvoidTheLightGameWindow(arcade.Window):
                             arcade.color.WHITE, 15)
 
     def animate(self, delta):     
-        print(CONSTANT.BUG_REPELLER)   
+        # print(CONSTANT.BUG_REPELLER)   
         self.world.animate(delta)
         if CONSTANT.RESTART:
             self.init_bat_sprite()

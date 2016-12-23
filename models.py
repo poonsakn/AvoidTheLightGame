@@ -115,7 +115,7 @@ class World():
         self.firefly = Firefly(self)
         self.firefly.random_location()
         self.fireflies.append(self.firefly)
-        CONSTANT.TIME_UNTIL_GET_HIT = 3
+        CONSTANT.TIME_UNTIL_GET_HIT = 1.5
 
 
 
@@ -123,7 +123,7 @@ class World():
         if key == arcade.key.SPACE and CONSTANT.BAT_ALIVE:
             CONSTANT.FLYING_STATE = 1
 
-        if key == arcade.key.Q and CONSTANT.BAT_ALIVE:
+        if key == arcade.key.B and CONSTANT.BAT_ALIVE:
             CONSTANT.BUG_REPELLER = True
 
         if (key == arcade.key.S or key == arcade.key.R) and not CONSTANT.BAT_ALIVE:
